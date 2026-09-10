@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Uni-VLaT adapts pretrained vision-language-action policies with distributed whole-body touch and tactile-anchored multimodal prediction for humanoid loco-manipulation.">
+  <meta name="theme-color" content="#153f89">
+  <title>Uni-VLaT | Whole-Body Tactile Adaptation of VLA Policies</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar"><a class="brand" href="#">Uni-<span>VLaT</span></a><nav aria-label="Main navigation"><a href="#abstract">Abstract</a><a href="#method">Method</a><a href="#tasks">Tasks</a><a href="#results">Results</a></nav><a class="paper-nav" href="assets/univlat-paper.pdf" target="_blank" rel="noopener">Paper <span aria-hidden="true">↗</span></a></header>
+  <main id="main">
+    <section class="hero" aria-labelledby="title">
+      <p class="eyebrow">Whole-body touch · Humanoid loco-manipulation</p>
+      <h1 id="title">Uni-<span>VLaT</span></h1>
+      <p class="paper-title">Whole-Body Tactile Adaptation of VLA Policies<br class="desktop-break"> for Humanoid Loco-Manipulation</p>
+      <p class="authors">Anonymous Authors</p>
+      <div class="resources"><a class="button primary" href="assets/univlat-paper.pdf" target="_blank" rel="noopener"><span aria-hidden="true">↗</span> Read the paper <small>Draft</small></a><span class="resource-pending">Code · forthcoming</span><span class="resource-pending">Videos · forthcoming</span></div>
+      <p class="lead">Bringing whole-body touch to pretrained robot policies.<br>Learning how <span class="touch">contact</span>, <span class="state">body state</span>, and <span class="vision">the scene</span> evolve together.</p>
+      <figure class="overview"><a href="assets/overview.png" target="_blank" rel="noopener" aria-label="Open the Uni-VLaT overview at full size"><img src="assets/overview.png" alt="Uni-VLaT overview: a humanoid with distributed tactile sensors combines vision, touch, language, and proprioception to generate whole-body actions. Training predicts future contact, body state, and scene representations." width="1927" height="1273" fetchpriority="high"></a><figcaption>Distributed touch connects perception to physical interaction. Figure from the paper.</figcaption></figure>
+    </section>
+    <section id="abstract" class="section narrow">
+      <p class="section-number">01 / The idea</p><h2>Touch as a physical anchor.</h2>
+      <p class="intro">Vision describes the scene. Touch reveals the interaction.</p>
+      <p>Pretrained vision-language-action (VLA) policies provide reusable visual, linguistic, and action priors. Contact-rich whole-body control remains challenging when physical interaction is weakly observed or visually occluded. Uni-VLaT adapts these policies with distributed whole-body tactile sensing.</p>
+      <p>A topology-aware spatial encoder and a causal four-frame history turn distributed measurements into tactile tokens. These tokens interact with vision-language, robot-state, and action features inside the policy. During training, a multimodal joint-embedding predictive objective uses this tactile-anchored context to predict future tactile, proprioceptive, and visual representations.</p>
+      <p>The resulting tactile-conditioned policy generates whole-body motion for a Unitree G1. The future-prediction heads are used only during training.</p>
+    </section>
+    <section id="method" class="section">
+      <p class="section-number">02 / Method</p><h2>Sense contact. Learn its consequences.</h2><p class="section-intro">Adapt a pretrained policy through tactile integration and multimodal predictive supervision.</p>
+      <figure class="method-figure"><a href="assets/method.png" target="_blank" rel="noopener" aria-label="Open the method diagram at full size"><img src="assets/method.png" alt="Uni-VLaT architecture showing spatial tactile encoding, temporal aggregation, multimodal attention in the DiT trunk, whole-body action generation, and training-only tactile, state, and vision prediction branches." width="2010" height="1120" loading="lazy"></a><figcaption>Online action generation and training-only cross-modal prediction share the tactile-conditioned policy context.</figcaption></figure>
+      <div class="steps"><article><span class="step-index">01</span><h3>Encode whole-body touch</h3><p>Region-wise embeddings capture contact across eight body regions. Axial pooling reduces sensitivity to sleeve rotation, while a four-frame temporal module captures recent contact history.</p></article><article><span class="step-index">02</span><h3>Connect touch to the task</h3><p>Tactile, proprioceptive, and action tokens interact through self-attention. Vision and language enter through cross-attention in the pretrained policy’s DiT trunk.</p></article><article><span class="step-index">03</span><h3>Predict interaction dynamics</h3><p>Three predictors use the contextualized tactile features to estimate four future steps of tactile, body-state, and visual latents in their own representation spaces.</p></article></div>
+      <div class="execution"><p class="eyebrow">At deployment</p><p>Tactile-conditioned VLA <span aria-hidden="true">→</span> 64-dimensional motion tokens <span aria-hidden="true">→</span> SONIC whole-body controller</p><span>Predictive heads and target encoders are omitted during execution.</span></div>
+    </section>
+    <section id="tasks" class="section">
+      <p class="section-number">03 / Real-world tasks</p><h2>Five ways to interact through touch.</h2><p class="section-intro">From direct arm contact to sequential whole-body manipulation.</p>
+      <div class="task-list">
+        <article><span class="task-number">01</span><div><h3>Table Sweeping</h3><p>Sweep five objects from the right half of a table to the left, with table height varying across rollouts.</p></div><span class="task-tag">Contact geometry</span></article>
+        <article><span class="task-number">02</span><div><h3>Box Holding</h3><p>Support a box as a person adds four objects, then allow the person to take the box away.</p></div><span class="task-tag">Loading & release</span></article>
+        <article><span class="task-number">03</span><div><h3>Back-Tap Walking</h3><p>Respond to a tap on the back by walking forward to a designated destination.</p></div><span class="task-tag">Tactile commands</span></article>
+        <article><span class="task-number">04</span><div><h3>Human–Robot Hugging</h3><p>Complete an encircling motion with gentle contact, with participants of different body sizes.</p></div><span class="task-tag">Human interaction</span></article>
+        <article><span class="task-number">05</span><div><h3>Composed Cleanup</h3><p>Sweep rubbish into a box, lift and carry the box, then deposit it and its contents into a waste bin.</p></div><span class="task-tag">Sequential behavior</span></article>
+      </div><p class="note">Task descriptions follow the manuscript. Real-robot demonstration videos are forthcoming.</p>
+    </section>
+    <section id="results" class="section">
+      <div class="section-heading"><div><p class="section-number">04 / Evaluation</p><h2>Real-robot task performance.</h2></div><span class="draft-tag">Preliminary results</span></div>
+      <p class="section-intro">Isaac-GR00T backbone · 50 demonstrations per task · 20 evaluation rollouts per configuration.</p>
+      <div class="table-wrap" role="region" aria-label="Task success rates; scroll horizontally on small screens" tabindex="0"><table><caption>Task success rate (%) reported in the supplied draft, Table I.</caption><thead><tr><th scope="col">Task</th><th scope="col">No Tactile</th><th scope="col">Tactile Input</th><th scope="col">HTD Prediction*</th><th scope="col" class="ours">Uni-VLaT</th></tr></thead><tbody><tr><th scope="row">Back-Tap Walking</th><td>0</td><td>90</td><td>90</td><td class="ours">90</td></tr><tr><th scope="row">Table Sweeping</th><td>50</td><td>60</td><td>60</td><td class="ours">70</td></tr><tr><th scope="row">Basket Loading*</th><td>30</td><td>60</td><td>70</td><td class="ours">80</td></tr><tr><th scope="row">Human–Robot Hugging</th><td>30</td><td>60</td><td><span aria-label="Not yet available">—</span></td><td class="ours"><span aria-label="Not yet available">—</span></td></tr><tr><th scope="row">Composed Cleanup</th><td>30</td><td>50</td><td>50</td><td class="ours">50</td></tr></tbody></table></div>
+      <p class="note">Results are incomplete and subject to revision. A dash denotes an unavailable measurement. No aggregate comparison is shown while results are incomplete.</p><p class="note">* Table I uses “Basket Loading” and “HTD Prediction”; the manuscript prose uses “Box Holding” and “Tactile Prediction.” Table labels are reproduced as supplied, pending author confirmation.</p>
+      <div class="study-notes"><div><h3>Across policy backbones</h3><p>The draft describes comparisons on Isaac-GR00T, π0.5, and DiT4DiT for Table Sweeping and Back-Tap Walking. Results are pending.</p></div><div><h3>Understanding the design</h3><p>Planned ablations examine sleeve pooling, predictive context, and absolute versus delta latent targets. Contact analysis will examine loading and release.</p></div></div>
+    </section>
+    <section id="citation" class="section narrow citation"><p class="section-number">05 / Citation</p><h2>BibTeX</h2><p class="note">Provisional citation for the anonymous manuscript; publication details will be updated.</p><div class="code-box"><button id="copy-citation" type="button">Copy BibTeX</button><pre><code id="bibtex">@misc{univlat2026,
+  title = {Uni-VLaT: Whole-Body Tactile Adaptation of VLA
+           Policies for Humanoid Loco-Manipulation},
+  author = {Anonymous Authors},
+  year = {2026},
+  note = {Manuscript draft}
+}</code></pre></div><p id="copy-status" role="status" aria-live="polite"></p></section>
+  </main>
+  <footer><a class="brand" href="#">Uni-<span>VLaT</span></a><p>Research project page · Manuscript draft</p><a href="#main">Back to top ↑</a></footer>
+</body>
+</html>

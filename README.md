@@ -2,6 +2,10 @@
 
 Static academic project page for **Uni-VLaT: Whole-Body Tactile Adaptation of VLA Policies for Humanoid Loco-Manipulation**.
 
+Repository: [shutongliu-dev/Uni-VLaT](https://github.com/shutongliu-dev/Uni-VLaT).
+
+Project website address after a future authorized GitHub Pages release: https://shutongliu-dev.github.io/Uni-VLaT/ (currently disabled).
+
 ## Development status
 
 Repository is private. GitHub Pages is disabled. Continue using local preview; do not enable public hosting without a new explicit publication request. The noindex meta tag is advisory, not access control.
